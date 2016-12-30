@@ -1,12 +1,19 @@
 public class TestingMatrix {
   public static void main(String[] args) {
     double[][] entries = {{1,3,5,0,0}, {9,9,7,8,2}, {8,6,6,2,1}};
-    Matrix A = new Matrix("A", "4x5", true);
+    Matrix A = new Matrix("A", "3x4", true);
+    //A.transpose();
     A.printMatrix();
     System.out.println();
 
     Matrix B = A.rowReduce();
+    //B.transpose();
     B.printMatrix();
+    System.out.println();
+
+    A.transpose();
+    Matrix C = A.rowReduce();
+    C.printMatrix();
     System.out.println();
 
     //System.out.println(1.0/11);
