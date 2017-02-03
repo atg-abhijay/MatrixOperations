@@ -222,6 +222,110 @@ public class Matrix{
     this.matrixEntries = transposed;// should we just change the pointer or copy the contents from transposed into this.matrixEntries?
     this.dimensions = transposed.length + "x" + transposed[0].length;
   }
+
+  public Matrix compare(double value) {
+    double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
+    for(int i = 0; i < entries.length; i++) {
+      for(int j = 0; j < entries[0].length; j++) {
+        if(this.matrixEntries[i][j] < value) {
+          entries[i][j] = 0;
+        }
+        else if (this.matrixEntries[i][j] > value){
+          entries[i][j] = 1;
+        }
+        else {
+          entries[i][j] = 0.5;
+        }
+        //System.out.println(entries[i][j]);
+      }
+    }
+    Matrix booleanValues = new Matrix("Boolean Valued", entries);
+    return booleanValues;
+  }
+
+  public Matrix add(String rowOrColumn, int position) {
+    Scanner reader = new Scanner(System.in);
+    //double[][] entries = new double[][]
+    if(!rowOrColumn.equals("r") && !rowOrColumn.equals("c")){
+      throw new IllegalArgumentException("You must choose between a row and a column!");
+    }
+
+
+    //if(rowOrColumn.equals("r")) {
+      //double[] addedRow = new double[this.matrixEntries[0].length];
+      /* System.out.println("Please enter the row to be appended");
+      for(int i = 0; i < addedRow.length; i++) {
+        addedRow[i] = reader.nextDouble();
+      } */
+      String rowColumn = "row";
+      boolean column = rowOrColumn.equals("c");
+      if(column) {
+        this.transpose();
+        rowColumn = "column";
+      }
+      double[][] entries = new double[this.matrixEntries.length + 1][this.matrixEntries[0].length];
+      int index1 = 0;
+      int index2 = 0;
+      for(int i = 0; i < this.matrixEntries.length; i++) {
+        for(int j = 0; j < this.matrixEntries[0].length; j++) {
+          if(index1 == position - 1) {
+            index1++;
+          }
+          entries[index1][index2] = this.matrixEntries[i][j];
+          //printArray(entries);
+          index2++;
+          if(index2 == entries[0].length) {
+            index1++;
+            index2 = 0;
+          }
+        }
+      }
+      //printArray(entries);
+      
+      System.out.println("Please enter the " + rowColumn +  " to be appended");
+      for(int j = 0; j < entries[0].length; j++) {
+        entries[position - 1][j] = reader.nextDouble();
+      }
+      //printArray(entries);
+      /* if(column) {
+        this.transpose();
+      } */
+      Matrix modifiedMatrix = new Matrix("Modified", entries);
+      //printArray(modifiedMatrix.matrixEntries);
+      if (column) {
+        modifiedMatrix.transpose();
+      }
+      return modifiedMatrix;
+    //}
+
+
+    /* else {
+      //double[] addedColumn = new double[this.matrixEntries.length];
+      double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length + 1];
+      int index1 = 0;
+      int index2 = 0;
+      for(int i = 0; i < this.matrixEntries.length; i++) {
+        for(int j = 0; j < this.matrixEntries[0].length; j++) {
+          if(index2 == position - 1) {
+            index2++;
+          }
+          entries[index1][index2] = this.matrixEntries[i][j];
+          index1++;
+          if(index1 == entries.length - 1) {
+            index2++;
+            index1 = 0;
+          }
+        }
+      }
+      System.out.println("Please enter the column to be appended");
+      for(int i = 0; i < entries.length; i++) {
+        entries[i][position - 1] = reader.nextDouble();
+      }
+      Matrix modifiedMatrix = new Matrix("Modified", entries);
+      return modifiedMatrix;
+    } */
+
+  }
   
   // ********* Private Helper Methods *********
   
@@ -410,6 +514,8 @@ public class Matrix{
           System.out.print((int) number + " ");
         }
         else {
+          //double[] numAsFraction = turnIntoFraction(number);
+          //System.out.print((int) numAsFraction[0] + "/" + (int) numAsFraction[1] + "  ");
           System.out.print(number + " ");
         }
       }
@@ -550,5 +656,15 @@ public class Matrix{
     //double[] fraction = {closestVal, Math.pow(10, j) - Math.pow(10, i)};
     double[] fraction = gcd(closestVal, (int) (Math.pow(10, j) - Math.pow(10, i)));
     return fraction;
+  }
+
+  public static double[][] turnRowIntoFraction(double[] row) {
+    double[][] entriesAsFractions = new double[row.length][2];
+    for(int i = 0; i < row.length; i++) {
+      double[] fraction = turnIntoFraction(row[i]);
+      entriesAsFractions[i][0] = fraction[0];
+      entriesAsFractions[i][1] = fraction[1];
+    }
+    return entriesAsFractions;
   }
 }

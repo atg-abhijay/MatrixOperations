@@ -1,31 +1,63 @@
 public class TestingMatrix {
   public static void main(String[] args) {
     double[][] entries = {{1,3,5,0,0}, {9,9,7,8,2}, {8,6,6,2,1}};
-    Matrix A = new Matrix("A", "3x4", true);
-    //A.transpose();
+    Matrix A = new Matrix("A", "4x5", true);
     A.printMatrix();
     System.out.println();
+    /* A.transpose();
+    A.printMatrix();
+    System.out.println(); */
+    //Matrix C = A.compare(30); */
+    //C.printMatrix();
+    Matrix D = A.add("r", 2);
+    D.printMatrix();
 
-    Matrix B = A.rowReduce();
+    /* Matrix B = A.rowReduce();
     //B.transpose();
     B.printMatrix();
-    System.out.println();
+    System.out.println(); */
 
-    A.transpose();
+    /* A.transpose();
     Matrix C = A.rowReduce();
     C.printMatrix();
-    System.out.println();
+    System.out.println(); */
 
     //System.out.println(1.0/11);
     /* double[] result = Matrix.gcd(-48, 11);
     System.out.println(result[0] + "/" + result[1]); */
 
-    double[] fraction = Matrix.turnIntoFraction(2.75);
-    System.out.println(fraction[0] + "/" + fraction[1]);
+    /* double test = 18.0/19;
+    System.out.println(test);
+    double[] fraction = Matrix.turnIntoFraction(test);
+    System.out.println((int) fraction[0] + "/" + (int) fraction[1]); */
     /* double[] lowestForm = Matrix.gcd(fraction[0], fraction[1]);
     System.out.println("Lowest form: " + lowestForm[0] + "/" + lowestForm[1]); */
-    System.out.println(1389/8521.0);
+    System.out.println();
+    /* double[] sumOfFractions = addingFractions(4.75, 5.32);
+    System.out.println(sumOfFractions[0] + "/" + sumOfFractions[1]); */
+    /* double[] row = {19, 18, 15, 11, 5};
+    for(int i  = 0; i < row.length; i++) {
+      row[i] = row[i]/19;
+      System.out.print(row[i] + " ");
+    }
+    System.out.println();
+    double[][] entriesAsFractions = Matrix.turnRowIntoFraction(row);
+    for(int i = 0; i < entriesAsFractions.length; i++) {
+      System.out.print(entriesAsFractions[i][0] + "/" + entriesAsFractions[i][1] + " ");
+    } */
 
+  }
+
+
+    public static double[] addingFractions(double num1, double num2) {
+    double[] fraction1 = Matrix.turnIntoFraction(num1);
+    double[] fraction2 = Matrix.turnIntoFraction(num2);
+    double[] sumOfFractions = new double[2];
+    sumOfFractions[0] = fraction1[0] * fraction2[1] + fraction1[1] * fraction2[0];
+    sumOfFractions[1] = fraction1[1] * fraction2[1];
+    return sumOfFractions;
+  }
+}
     /* double[]numbers = {2.4999999999, -0.999999999999, 0.0000000001};
     Matrix.roundingOff(numbers);
     for(int i = 0; i < numbers.length; i++) {
@@ -137,7 +169,6 @@ public class TestingMatrix {
     //Matrix mystery2 = A.multiplyMatrices(B, "AB").multiplyMatrices(C, "mystery2");
     //mystery.printMatrix();
     //mystery2.printMatrix(); */
-  }
   
   /* public static double[][] randomArray(int height, int width) {
     double[][] random = new double[height][width];
@@ -148,4 +179,3 @@ public class TestingMatrix {
     }
     return random;
   } */
-}
