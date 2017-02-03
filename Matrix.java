@@ -46,6 +46,9 @@ public class Matrix{
     }
   }
   
+  public void setName(String newName) {
+    this.name = newName;
+  }
   
   // ****** PRINTING A MATRIX ******
   
