@@ -88,7 +88,7 @@ public class Matrix{
   }
   
 
-  // ****** ADDING TWO MATRICES ******
+  // ****** ADDING/SUBTRACTING TWO MATRICES ******
 
 
   public Matrix addMatrices(Matrix secondMatrix, String name, boolean subtract) {
