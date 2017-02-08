@@ -1,19 +1,22 @@
 public class TestingMatrix {
   public static void main(String[] args) {
     double[][] entries = {{1,3,5,0,0}, {9,9,7,8,2}, {8,6,6,2,1}};
-    Matrix A = new Matrix("A", "3x4", true);
-    A.setName("First Time");
+    Matrix A = new Matrix("A", "3x3", true);
+    //A.setName("First Time");
     A.printMatrix();
-    System.out.println();
+    Matrix C = new Matrix("C", "3x3", true);
+    C.printMatrix();
+    Matrix result = A.addMatrices(C, "A+C", true);
+    result.printMatrix();
     /* A.transpose();
     A.printMatrix();
     System.out.println(); */
     //Matrix C = A.compare(30); */
     //C.printMatrix();
-    Matrix D = A.add("r", 2);
+    /* Matrix D = A.add("r", 2);
     D.printMatrix();
     Matrix E = D.add("c", 3);
-    E.printMatrix();
+    E.printMatrix(); */
 
     /* Matrix B = A.rowReduce();
     //B.transpose();

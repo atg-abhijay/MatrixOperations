@@ -84,8 +84,33 @@ public class Matrix{
       }
       System.out.println();
     }
+    System.out.println();
   }
   
+
+  // ****** ADDING TWO MATRICES ******
+
+
+  public Matrix addMatrices(Matrix secondMatrix, String name, boolean subtract) {
+    boolean height = this.matrixEntries.length == secondMatrix.matrixEntries.length;
+    boolean width = this.matrixEntries[0].length == secondMatrix.matrixEntries[0].length;
+    int k = 1;
+    if(subtract) {
+      k = -1;
+    }
+    if(!height || !width) {
+      throw new IllegalArgumentException("The matrices should have the same dimensions to be added!");
+    }
+    double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
+    for(int i = 0; i < entries.length; i++) {
+      for(int j = 0; j < entries[0].length; j++) {
+        entries[i][j] = this.matrixEntries[i][j] + k * secondMatrix.matrixEntries[i][j];
+      }
+    }
+    Matrix addition = new Matrix(name, entries);
+    return addition;
+  }
+
   
   // ****** MULTIPLYING TWO MATRICES ******
   
