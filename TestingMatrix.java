@@ -1,13 +1,59 @@
 public class TestingMatrix {
   public static void main(String[] args) {
-    double[][] entries = {{1,3,5,0,0}, {9,9,7,8,2}, {8,6,6,2,1}};
-    Matrix A = new Matrix("A", "3x3", true);
+    double[][] entries = {{0,1,0}, {0,0,1}, {1,0,0}};
+    //Matrix alpha = new Matrix("Alpha", "3x3", false);
+    //Matrix chi = new Matrix("Chi", "3x3", false);
+    Matrix one = new Matrix("E1 Inverse", "3x3", false);
+    Matrix two = new Matrix("E2 Inverse", "3x3", false);
+    Matrix three = new Matrix("E3 Inverse", "3x3", false);
+    //alpha.printMatrix();
+
+    Matrix answer = one.multiplyMatrices(two, "onetwo").multiplyMatrices(three, "onetwothree");
+    answer.printMatrix();
+
+    //Matrix P = new Matrix("P", "2x2", true);
     //A.setName("First Time");
-    A.printMatrix();
-    Matrix C = new Matrix("C", "3x3", true);
+    //A.printMatrix();
+    /* Matrix C = new Matrix("C", "3x3", true);
     C.printMatrix();
     Matrix result = A.addMatrices(C, "A+C", true);
-    result.printMatrix();
+    result.printMatrix(); */
+
+    //Matrix beta = alpha.rowReduce();
+    //beta.printMatrix();
+
+    /* Matrix result = alpha.multiplyMatrices(chi, "AlphaChi");
+    result.printMatrix(); */
+
+    //Matrix aToPower = alpha.raiseToPower(2);
+    //aToPower.printMatrix();
+
+    /* Matrix Asquare = A.multiplyMatrices(A, "Asquare").multiplyByNumber(2);
+    Asquare.printMatrix();
+    Matrix answer = Asquare.addMatrices(A.multiplyByNumber(3), "nothing", true).addMatrices(I.multiplyByNumber(5), "answer", false);
+    answer.printMatrix(); */
+    
+    /* for(int i = 2; i < 8; i++) {
+      Matrix I = Matrix.makeIdentity(i);
+      I.printMatrix();
+    } */
+
+    /* System.out.println("Time: ");
+    for(int i = 2; i < 11; i++) {
+      long startTime = System.nanoTime();
+      int numTimes = 1;
+      for(int j = 0; j < numTimes; j++) {
+        Matrix appo = new Matrix("appo", i + "x" + i, true);
+        appo.printMatrix();
+        appo.determinant();
+        System.out.println("Determinant: " + appo.determinant());
+      }
+      long stopTime = (System.nanoTime() - startTime)/numTimes;
+      double time = stopTime/(Math.pow(10,6));
+      System.out.println("det of " + i + "x" + i +  ": " + time + " milliseconds\n");
+    } */
+    
+
     /* A.transpose();
     A.printMatrix();
     System.out.println(); */

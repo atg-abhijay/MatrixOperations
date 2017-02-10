@@ -42,6 +42,7 @@ public class Matrix{
     else {
       System.out.println("Please enter the upper bound for the entries");
       int upperBound = reader.nextInt();
+      //int upperBound = 50;
       this.matrixEntries = randomArray(height, width, upperBound);
     }
   }
@@ -94,12 +95,12 @@ public class Matrix{
   public Matrix addMatrices(Matrix secondMatrix, String name, boolean subtract) {
     boolean height = this.matrixEntries.length == secondMatrix.matrixEntries.length;
     boolean width = this.matrixEntries[0].length == secondMatrix.matrixEntries[0].length;
+    if(!height || !width) {
+      throw new IllegalArgumentException("The matrices should have the same dimensions to be added!");
+    }
     int k = 1;
     if(subtract) {
       k = -1;
-    }
-    if(!height || !width) {
-      throw new IllegalArgumentException("The matrices should have the same dimensions to be added!");
     }
     double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
     for(int i = 0; i < entries.length; i++) {
@@ -111,6 +112,54 @@ public class Matrix{
     return addition;
   }
 
+
+  // ****** MULTIPLYING MATRIX BY CONSTANT ******
+
+
+  public Matrix multiplyByNumber(double constant) {
+    double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
+    for(int i = 0; i < entries.length; i++) {
+      for(int j = 0; j < entries[0].length; j++) {
+        entries[i][j] = constant * this.matrixEntries[i][j];
+      }
+    }
+    Matrix amplified = new Matrix("amplified", entries);
+    return amplified;
+  }
+
+
+  // ****** MAKE IDENTITY MATRIX ******
+
+
+  public static Matrix makeIdentity(int size) {
+    double[][] entries = new double[size][size];
+    for(int i = 0; i < size; i++) {
+      for(int j = 0; j < size; j++) {
+        if(i == j) {
+          entries[i][j] = 1;
+        }
+      }
+    }
+    Matrix identity = new Matrix("Identity", entries);
+    return identity;
+  }
+
+
+  // ****** RAISE A MATRIX TO POWER ******
+
+
+  public Matrix raiseToPower(int power) {
+    if(this.matrixEntries.length != this.matrixEntries[0].length) {
+      throw new IllegalArgumentException("Only square matrices can be raised to powers!");
+    }
+    //double[][] entries = new double[this.matrixEntries.length][this.matrixEntries.length];
+    Matrix aToPower = makeIdentity(this.matrixEntries.length);
+    for(int i = 0; i < power; i++) {
+      aToPower = aToPower.multiplyMatrices(this, "aToPower");
+    }
+    aToPower.setName(this.name + "ToPower" + power);
+    return aToPower;
+  }
   
   // ****** MULTIPLYING TWO MATRICES ******
   
