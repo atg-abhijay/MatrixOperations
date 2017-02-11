@@ -274,8 +274,9 @@ public class Matrix{
             A^-1 = (1/det(A)) * adj(A) */
     int determinant = this.determinant();
     if(determinant == 0) {
-      System.out.println("Inverse does not exist!");
-      return null;
+      System.out.println("Inverse does not exist!\n");
+      Matrix identity = makeIdentity(this.matrixEntries.length);
+      return identity.addMatrices(identity, "Zero", true);
     }
     Matrix inverse = this.adjointOfMatrix().multiplyByNumber(1.0/determinant);
     inverse.setName(this.name + " inverse");
