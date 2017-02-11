@@ -3,13 +3,20 @@ public class TestingMatrix {
     double[][] entries = {{0,1,0}, {0,0,1}, {1,0,0}};
     //Matrix alpha = new Matrix("Alpha", "3x3", false);
     //Matrix chi = new Matrix("Chi", "3x3", false);
-    Matrix one = new Matrix("E1 Inverse", "3x3", false);
+    /* Matrix one = new Matrix("E1 Inverse", "3x3", false);
     Matrix two = new Matrix("E2 Inverse", "3x3", false);
     Matrix three = new Matrix("E3 Inverse", "3x3", false);
     //alpha.printMatrix();
 
     Matrix answer = one.multiplyMatrices(two, "onetwo").multiplyMatrices(three, "onetwothree");
-    answer.printMatrix();
+    answer.printMatrix(); */
+
+    //Matrix.makeIdentity(3).rowReduce().printMatrix();
+    Matrix A = new Matrix("A", "3x3", false);
+    A.printMatrix();
+    Matrix inverseOfA = A.inverse();
+    inverseOfA.printMatrix();
+    A.multiplyMatrices(inverseOfA, "Answer").printMatrix();
 
     //Matrix P = new Matrix("P", "2x2", true);
     //A.setName("First Time");

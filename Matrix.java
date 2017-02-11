@@ -81,6 +81,7 @@ public class Matrix{
              to a fraction and stores the numerator and denominator separately */
           double[] numberAsFraction = turnIntoFraction(number);
           System.out.print((int) numberAsFraction[0] + "/" + (int) numberAsFraction[1] + " ");
+          //System.out.print(number + " ");
         }
       }
       System.out.println();
@@ -161,6 +162,7 @@ public class Matrix{
     return aToPower;
   }
   
+
   // ****** MULTIPLYING TWO MATRICES ******
   
   
@@ -260,8 +262,30 @@ public class Matrix{
     }
   }
   
+
+  // ****** INVERSE OF A MATRIX ******
+
+
+  public Matrix inverse() {
+    if(this.matrixEntries.length != this.matrixEntries[0].length) {
+      throw new IllegalArgumentException("Inverse can only be found for a square matrix!");
+    }
+    /* the inverse of a matrix A is given by
+            A^-1 = (1/det(A)) * adj(A) */
+    int determinant = this.determinant();
+    if(determinant == 0) {
+      System.out.println("Inverse does not exist!");
+      return null;
+    }
+    Matrix inverse = this.adjointOfMatrix().multiplyByNumber(1.0/determinant);
+    inverse.setName(this.name + " inverse");
+    return inverse;
+  }
+
+
   // ****** ROW REDUCING A MATRIX ******
   
+
   public Matrix rowReduce() {
     /* this method is used to carry a
        matrix into Reduced Row Echelon Form */
@@ -280,8 +304,10 @@ public class Matrix{
     return rowReduced;
   }
   
+
   // ****** TRANSPOSING A MATRIX ******
   
+
   public void transpose() {
     double[][] transposed = new double[this.matrixEntries[0].length][this.matrixEntries.length];
     int height = 0;
@@ -300,8 +326,18 @@ public class Matrix{
     this.dimensions = transposed.length + "x" + transposed[0].length;
   }
 
+
+  // ****** COMPARING ENTRIES OF MATRIX TO A VALUE ******
+
+
   public Matrix compare(double value) {
     double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
+    /* we compare the individual entries to
+       a value and if the entry is larger 
+       than the "value" then we store 1 at its
+       position in a new matrix. if it is less
+       than the "value", then 0, if equal to the
+       "value" then we store 0.5 at that position */
     for(int i = 0; i < entries.length; i++) {
       for(int j = 0; j < entries[0].length; j++) {
         if(this.matrixEntries[i][j] < value) {
@@ -320,92 +356,87 @@ public class Matrix{
     return booleanValues;
   }
 
+
+  // ****** ADDING A ROW/COLUMN TO MATRIX ******
+
+
   public Matrix add(String rowOrColumn, int position) {
-    Scanner reader = new Scanner(System.in);
-    //double[][] entries = new double[][]
+    /* "position" here is treated as starting from 1.
+        the position does not start from zero. to
+        accomodate for that in terms of arrays, we
+        subtract 1 and use the term position - 1 */
     if(!rowOrColumn.equals("r") && !rowOrColumn.equals("c")){
       throw new IllegalArgumentException("You must choose between a row and a column!");
     }
+    Scanner reader = new Scanner(System.in);
+    /* adding a row to a matrix is straightforward
+       and direct. if we want to add a column though
+       we first take the transpose of the matrix and
+       add a ROW at the position where we wanted to
+       add a column and then take the transpose of the
+       matrix once again. adding a column to a matrix
+       is equivalent to adding a row to the transpose
+       of that matrix */
 
-
-    //if(rowOrColumn.equals("r")) {
-      //double[] addedRow = new double[this.matrixEntries[0].length];
-      /* System.out.println("Please enter the row to be appended");
-      for(int i = 0; i < addedRow.length; i++) {
-        addedRow[i] = reader.nextDouble();
-      } */
-      String rowColumn = "row";
-      boolean column = rowOrColumn.equals("c");
-      if(column) {
-        this.transpose();
-        rowColumn = "column";
-      }
-      double[][] entries = new double[this.matrixEntries.length + 1][this.matrixEntries[0].length];
-      int index1 = 0;
-      int index2 = 0;
-      for(int i = 0; i < this.matrixEntries.length; i++) {
-        for(int j = 0; j < this.matrixEntries[0].length; j++) {
-          if(index1 == position - 1) {
-            index1++;
-          }
-          entries[index1][index2] = this.matrixEntries[i][j];
-          //printArray(entries);
-          index2++;
-          if(index2 == entries[0].length) {
-            index1++;
-            index2 = 0;
-          }
-        }
-      }
-      //printArray(entries);
-      
-      System.out.println("Please enter the " + rowColumn +  " to be appended");
-      for(int j = 0; j < entries[0].length; j++) {
-        entries[position - 1][j] = reader.nextDouble();
-      }
-      //printArray(entries);
-      /* if(column) {
-        this.transpose();
-      } */
-      Matrix modifiedMatrix = new Matrix("Modified", entries);
-      //printArray(modifiedMatrix.matrixEntries);
-      if (column) {
-        modifiedMatrix.transpose();
-      }
-      return modifiedMatrix;
-    //}
-
-
-    /* else {
-      //double[] addedColumn = new double[this.matrixEntries.length];
-      double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length + 1];
-      int index1 = 0;
-      int index2 = 0;
-      for(int i = 0; i < this.matrixEntries.length; i++) {
-        for(int j = 0; j < this.matrixEntries[0].length; j++) {
-          if(index2 == position - 1) {
-            index2++;
-          }
-          entries[index1][index2] = this.matrixEntries[i][j];
+    // we assume that a row is to be added
+    String rowColumn = "row";
+    boolean column = rowOrColumn.equals("c");
+    /* if a column is to be added, we take
+       the transpose of the matrix */
+    if(column) {
+      this.transpose();
+      rowColumn = "column";
+    }
+    /* irrespective of whether we want to add
+       a row or a column, we are essentially only
+       adding a row. therefore the number of rows
+       in "entries" is one more than the original */
+    double[][] entries = new double[this.matrixEntries.length + 1][this.matrixEntries[0].length];
+    int index1 = 0;
+    int index2 = 0;
+    /* first we copy the original matrix into our larger array entries.
+       we leave the row where a new row has to be added empty
+       by the condition: if index1 == position - 1; index1++
+       by doing this we skip over the row where new entries
+       are supposed to be added */
+    for(int i = 0; i < this.matrixEntries.length; i++) {
+      for(int j = 0; j < this.matrixEntries[0].length; j++) {
+        if(index1 == position - 1) {
           index1++;
-          if(index1 == entries.length - 1) {
-            index2++;
-            index1 = 0;
-          }
+        }
+        entries[index1][index2] = this.matrixEntries[i][j];
+        //printArray(entries);
+        index2++;
+        if(index2 == entries[0].length) {
+          index1++;
+          index2 = 0;
         }
       }
-      System.out.println("Please enter the column to be appended");
-      for(int i = 0; i < entries.length; i++) {
-        entries[i][position - 1] = reader.nextDouble();
-      }
-      Matrix modifiedMatrix = new Matrix("Modified", entries);
-      return modifiedMatrix;
-    } */
+    }
+    //printArray(entries);
+      
+    System.out.println("Please enter the " + rowColumn +  " to be appended");
+    for(int j = 0; j < entries[0].length; j++) {
+      entries[position - 1][j] = reader.nextDouble();
+    }
+    //printArray(entries);
 
+    Matrix modifiedMatrix = new Matrix("Modified", entries);
+    //printArray(modifiedMatrix.matrixEntries);
+
+    /* if we wanted to add a column, we need to
+       take tranpose once again to obtain
+       the correct matrix */
+    if(column) {
+      modifiedMatrix.transpose();
+    }
+    return modifiedMatrix;
   }
   
+
   // ********* Private Helper Methods *********
   
+
   private static double[][] randomArray(int height, int width, int upperBound) {
     double[][] random = new double[height][width];
     for(int i = 0; i < random.length; i++) {
@@ -509,13 +540,13 @@ public class Matrix{
        in that column. Move the row containing k
        to the top of the matrix */
     search:
-    for(int j = 0; j < rows[0].length; j++) { // starting point of i will change
+    for(int j = 0; j < rows[0].length; j++) {
       for(int i = numRow; i < rows.length; i++) {
         if(rows[i][j] != 0) {
           if(i != numRow) {
             /* we switch the rows only if the i value obtained
                is not that of the row under consideration */
-            switchRows(rows, i, numRow);// 0 will change
+            switchRows(rows, i, numRow);
           }
           printArray(rows);
           break search;
@@ -526,7 +557,7 @@ public class Matrix{
     /* we find the first non-zero entry
        in the row indexed numRow and store
        its position in the row and its value */
-    double nonZero = 1;// ??? values to set for nonZero and position
+    double nonZero = 1;
     int position = 0;
     for(int j = 0; j < rows[0].length; j++) {
       if(rows[numRow][j] != 0) {
@@ -572,20 +603,6 @@ public class Matrix{
     System.out.println("\n");
     for(int i = 0; i < array.length; i++) {
       for(int j = 0; j < array[0].length; j++) {
-        /* String number = "" + array[i][j];
-        number = number.replace('.', ',');
-        String[] splitNumber = number.split(",");
-        if(splitNumber[1].equals("0")) {
-          System.out.print(splitNumber[0] + " ");
-        }
-        else{
-          //int decimalLength = splitNumber[1].length();
-          //int withoutDecimal = (int) (array[i][j] * Math.pow(10, decimalLength));
-          //int denominator = (int) (Math.pow(10, decimalLength));
-          //int[] lowestForm = gcd(withoutDecimal, denominator);
-          //System.out.println(lowestForm[0] + "/" + lowestForm[1]);
-          System.out.print(array[i][j] + " ");
-        } */
         double number = array[i][j];
         if(number % ((int) number) == 0 || number == 0) {
           System.out.print((int) number + " ");
