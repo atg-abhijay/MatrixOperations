@@ -1,6 +1,12 @@
 public class TestingMatrix {
   public static void main(String[] args) {
     double[][] entries = {{0,1,0}, {0,0,1}, {1,0,0}};
+    Matrix A = new Matrix("A", "4x3", true);
+    Matrix B = new Matrix("B", "3x4", true);
+    A.printMatrix();
+    B.printMatrix();
+    Matrix product = A.multiplyMatrices(B, "AB");
+    product.printMatrix();
   }
 
   public static double[] addingFractions(double num1, double num2) {

@@ -40,7 +40,7 @@ public class Matrix{
       }
     }
     else {
-      System.out.println("Please enter the upper bound for the entries");
+      System.out.println("Please enter the upper bound for the entries of matrix " + this.name);
       int upperBound = reader.nextInt();
       //int upperBound = 50;
       this.matrixEntries = randomArray(height, width, upperBound);
