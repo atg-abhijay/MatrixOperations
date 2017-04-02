@@ -8,7 +8,7 @@ public class TestingMatrix {
     B.printMatrix();
     Matrix product = A.multiplyMatrices(B, "AB");
     product.printMatrix(); */
-    Scanner reader = new Scanner(System.in);
+    /* Scanner reader = new Scanner(System.in);
     String initialDisplay = "Welcome to the program that lets you work with Matrices!";
     System.out.println(initialDisplay + "\n");
     String[] options = new String[6];
@@ -20,16 +20,26 @@ public class TestingMatrix {
     options[5] = " 12. Matrix compare(double value)\n 13. add(String rowOrColumn, int position)\n 14. setName(String newName)";
     for(int i = 0; i < options.length; i++) {
       System.out.println(options[i]);
-    }
-    while(!reader.next().equals("exit")) {
+    } */
+    /* while(!reader.next().equals("exit")) {
       System.out.println("Random matrix or not? (true/false)");
       boolean random = Boolean.parseBoolean(reader.next());
       System.out.println("Size of matrix (axb)");
       String size = reader.next();
       Matrix C = new Matrix("C", size, random);
-      Matrix reduced = C.rowReduce();
-      reduced.printMatrix();
-    }
+      C.inverse().printMatrix();
+      //Matrix reduced = C.rowReduce();
+      //reduced.printMatrix();
+    } */
+    
+    Matrix A = new Matrix("A", "9x9", false);
+    A.printMatrix();
+    //A.solveSudoku();
+    A.printAsSudoku();
+    
+    /* Matrix E = new Matrix("E", "2x2", false);
+    Matrix F = new Matrix("F", "2x2", false);
+    E.multiplyMatrices(F, "EF").printMatrix(); */
 
   }
 
