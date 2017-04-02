@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 public class Matrix{
   private String name;
   private String dimensions;
@@ -435,6 +435,89 @@ public class Matrix{
   }
   
 
+  // ********* MATRIX AS A SUDOKU ********** 
+
+  public void solveSudoku() {
+    Stack<Integer> lastRowChanged = new Stack<Integer>();
+    Stack<Integer> lastColumnChanged = new Stack<Integer>();
+    Stack<Integer> lastValidVal = new Stack<Integer>();
+
+    for(int i = 0; i < this.matrixEntries.length; i++) {
+      for(int j = 0; j < this.matrixEntries.length; j++) {
+        if(this.matrixEntries[i][j] == 0) {
+          //this.insertAndBackTrack(i,j,lastRowChanged, lastColumnChanged, lastValidVal);
+          boolean ableToInsert = false;
+          for(int k = 1; k < 10; k++) {
+            if(this.isValid(i,j,k)) {
+              this.matrixEntries[i][j] = k;
+              lastRowChanged.push(i);
+              lastColumnChanged.push(j);
+              lastValidVal.push(k);
+              ableToInsert = true;
+              this.printMatrix();
+              System.out.println("\n\n");
+              break;
+            }
+          }
+
+          if(!ableToInsert) {
+            backTrack(lastRowChanged.peek(), lastColumnChanged.peek(), lastRowChanged, lastColumnChanged, lastValidVal);
+            search:
+            for(int p = 0; p < this.matrixEntries.length; p++) {
+              for(int q = 0; q < this.matrixEntries.length; q++) {
+                if(this.matrixEntries[p][q] == 0) {
+                    if(j == this.matrixEntries.length - 1 && p != 0) {
+                        i = p-1;
+                    }
+                    else {
+                        i = p;
+                    }
+                    j = q-1;
+                    break search;
+                }
+              }
+            }
+          }                
+        }
+      }
+    }
+    System.out.println("\n\n");
+  }
+
+
+  public void printAsSudoku() {
+    // Compute the number of digits necessary to print out each number in the Sudoku puzzle
+    int digits = (int) Math.floor(Math.log(this.matrixEntries.length) / Math.log(10)) + 1;
+
+    // Create a dashed line to separate the boxes
+    int size = (int) Math.sqrt(this.matrixEntries.length);
+    int lineLength = (digits + 1) * this.matrixEntries.length + 2 * size - 3;
+    StringBuffer line = new StringBuffer();
+    for(int lineInit = 0; lineInit < lineLength; lineInit++) {
+      line.append('-');
+    }
+
+    // Go through the sudoku, printing out its values separated by spaces
+    for(int i = 0; i < this.matrixEntries.length; i++ ) {
+      for(int j = 0; j < this.matrixEntries.length; j++ ) {
+        printFixedWidth(String.valueOf(this.matrixEntries[i][j]), digits);
+        // Print the vertical lines between boxes 
+        if((j < this.matrixEntries.length-1) && ((j+1) % size == 0)) {
+          System.out.print( " |" );
+          System.out.print( " " );
+        }
+      }
+      
+      System.out.println();
+      // Print the horizontal line between boxes
+      if((i < this.matrixEntries.length-1) && ((i+1) % size == 0)) {
+        System.out.println(line.toString());
+      }
+
+    }
+  }
+
+
   // ********* Private Helper Methods *********
   
 
@@ -762,4 +845,86 @@ public class Matrix{
     }
     return entriesAsFractions;
   }
+
+
+  // Methods for working with Sudoku
+
+  
+  private void backTrack(int currentRow, int currentColumn, Stack<Integer> lastRowChanged, Stack<Integer> lastColumnChanged, Stack<Integer> lastValidVal) {
+    for(int p = lastValidVal.peek()+1; p < 10; p++) {
+      if(this.isValid(currentRow, currentColumn, p)) {
+        this.matrixEntries[currentRow][currentColumn] = p;
+        lastValidVal.pop();
+        lastValidVal.push(p);
+        return;
+      }
+    }
+
+    lastRowChanged.pop(); lastColumnChanged.pop(); lastValidVal.pop();
+    this.matrixEntries[currentRow][currentColumn] = 0;
+    this.printMatrix();
+    System.out.println("\n\n");
+    this.backTrack(lastRowChanged.peek(), lastColumnChanged.peek(), lastRowChanged, lastColumnChanged, lastValidVal);
+
+    this.printMatrix();
+    System.out.println("(" + currentRow + "," + currentColumn + ")");
+    System.out.println("\n");
+    //this.solve();
+    return;
+  }
+
+  private boolean isValid(int row, int column, int number) {
+      /* checks if the number occurs
+          only once in its row */
+      for(int j = 0; j < this.matrixEntries.length; j++) {
+        if (j != column) {
+          if(number == this.matrixEntries[row][j]) {
+            //System.out.println("Number: " + number);
+            //System.out.println("Grid row value (" + row + "," + j + "): " + this.Grid[row][j]);
+            return false;
+          }
+        }
+      }
+
+      /* checks if the number occurs
+          only once in its column */
+      for(int i = 0; i < this.matrixEntries.length; i++) {
+        if (i != row) {
+          if(number == this.matrixEntries[i][column]) {
+            //System.out.println("Number: " + number);
+            //System.out.println("Grid column value(" + i + "," + column + "): " + this.Grid[i][column]);
+            return false;
+          }
+        }
+      }
+
+      /* checks if the number occurs
+          only once in its box */
+      int size = (int) Math.sqrt(this.matrixEntries.length);
+      int boxRow = (row/size) * size;
+      int boxColumn = (column/size) * size;
+
+      for(int k = boxRow; k < boxRow + size; k++) {
+        for(int p = boxColumn; p < boxColumn + size; p++) {
+          if (k != row && p != column) {
+            if(number == this.matrixEntries[k][p]) {
+              //System.out.println("Number: " + number);
+              //System.out.println("Grid box value(" + k + "," + p + "): " + this.Grid[k][p]);
+              return false;
+            }
+          }
+        }
+      }
+      return true;
+    }
+
+
+    private void printFixedWidth(String text, int width) {
+      for(int i = 0; i < width - text.length(); i++) {
+        System.out.print(" ");
+        System.out.print(text);
+      }
+    }
+
+
 }
