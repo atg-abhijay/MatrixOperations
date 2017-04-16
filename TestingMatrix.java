@@ -3,7 +3,7 @@ public class TestingMatrix {
   public static void main(String[] args) {    
     Matrix A = new Matrix("A", "5x4", true);
     A.printMatrix();
-    A.sort("c", 4).printMatrix();
+    A.sort("r", 3).printMatrix();
   }
 
   public static double[] addingFractions(double num1, double num2) {
