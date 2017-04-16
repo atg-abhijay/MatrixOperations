@@ -522,8 +522,19 @@ public class Matrix{
 
 
   public Matrix sort(String columnOrRow, int position) {
-    if (columnOrRow.equals("r")) {
+    boolean row = columnOrRow.equals("r");
+    if (row) {
       this.transpose();
+    }
+
+    if (position > this.matrixEntries[0].length) {
+      if(row) {
+        System.out.println("You are trying to access a row that does not exist!");
+      }
+      else {
+        System.out.println("You are trying to access a column that does not exist!");
+      }
+      return makeIdentity(1);
     }
 
     Double[][] elements = new Double[this.matrixEntries.length][this.matrixEntries[0].length];
@@ -591,7 +602,7 @@ public class Matrix{
       }
     }
     Matrix sorted = new Matrix(this.name + "Sorted", finalVals);
-    if (columnOrRow.equals("r")) {
+    if (row) {
       sorted.transpose();
     }
     
