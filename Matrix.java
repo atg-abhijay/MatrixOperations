@@ -522,82 +522,81 @@ public class Matrix{
 
 
   public Matrix sort(String columnOrRow, int position) {
-        if (columnOrRow.equals("r")) {
-          this.transpose();
-        }
-
-        Double[][] elements = new Double[this.matrixEntries.length][this.matrixEntries[0].length];
-        for(int i = 0; i < elements.length; i++) {
-          for(int j = 0; j < elements[0].length; j++) {
-            elements[i][j] = this.matrixEntries[i][j];
-          }
-        }
-        double max = 0;
-
-        double[] changedRC = new double[elements.length];
-        Double[][] arrays = new Double[elements.length][elements[0].length];        
-        for(int i = 0; i < changedRC.length; i++) {
-            double num = elements[i][position - 1];                              
-            if(max < num) {
-                max = num;                                  
-            }
-            changedRC[i] = num;
-        }
-
-        for(int j = 0; j < elements.length; j++) {
-            arrays[j] = elements[j];
-        }
-
-        int maxNumDigits = (int) Math.log10(max) + 1;        
-        LinkedList<LinkedList<Double>> bucketsForRC = new LinkedList<LinkedList<Double>>();
-        LinkedList<LinkedList<Double[]>> bucketsForArray = new LinkedList<LinkedList<Double[]>>();
-        for(int p = 0; p < 10; p++) {                           
-            bucketsForRC.add(new LinkedList<Double>());
-            bucketsForArray.add(new LinkedList<Double[]>());
-        }
-        
-
-        for(int j = 1; j <= maxNumDigits; j++) {        
-            for(int k = 0; k < changedRC.length; k++) {                 
-                double number = changedRC[k];                                                  
-                int digit = (int) ((number % Math.pow(10, j)) / Math.pow(10,j-1));
-                bucketsForRC.get(digit).add(number);
-                bucketsForArray.get(digit).add(arrays[k]);                                        
-            }                                                                    
-
-            double[] partiallySorted = new double[changedRC.length];
-            Double[][] parSorted = new Double[elements.length][elements[0].length];
-            int numAt = 0;                                          
-
-            search:
-            for(int m = 0; m < 10; m++) {                           
-                while(!bucketsForRC.get(m).isEmpty()) {                                  
-                    partiallySorted[numAt] = bucketsForRC.get(m).pollFirst();   
-                    parSorted[numAt] = bucketsForArray.get(m).pollFirst();
-                    numAt++;                                                            
-                }
-                if(numAt == changedRC.length) {                                         
-                    break search;                                                       
-                }
-            }
-            changedRC = partiallySorted;
-            arrays = parSorted;
-        }
-
-        //Double[][] answer = arrays;
-        double[][] finalVals = new double[arrays.length][arrays[0].length];
-        for(int i = 0; i < finalVals.length; i++) {
-          for(int j = 0; j < finalVals[0].length; j++) {
-            finalVals[i][j] = arrays[i][j];
-          }
-        }
-        Matrix sorted = new Matrix(this.name + "Sorted", finalVals);
-        if (columnOrRow.equals("r")) {
-          sorted.transpose();
-        }
-        
-        return sorted;
+    if (columnOrRow.equals("r")) {
+      this.transpose();
     }
+
+    Double[][] elements = new Double[this.matrixEntries.length][this.matrixEntries[0].length];
+    for(int i = 0; i < elements.length; i++) {
+      for(int j = 0; j < elements[0].length; j++) {
+        elements[i][j] = this.matrixEntries[i][j];
+      }
+    }
+    double max = 0;
+
+    double[] changedRC = new double[elements.length];
+    Double[][] arrays = new Double[elements.length][elements[0].length];        
+    for(int i = 0; i < changedRC.length; i++) {
+      double num = elements[i][position - 1];                              
+        if(max < num) {
+          max = num;                                  
+        }
+      changedRC[i] = num;
+    }
+
+    for(int j = 0; j < elements.length; j++) {
+      arrays[j] = elements[j];
+    }
+
+    int maxNumDigits = (int) Math.log10(max) + 1;        
+    LinkedList<LinkedList<Double>> bucketsForRC = new LinkedList<LinkedList<Double>>();
+    LinkedList<LinkedList<Double[]>> bucketsForArray = new LinkedList<LinkedList<Double[]>>();
+    for(int p = 0; p < 10; p++) {                           
+      bucketsForRC.add(new LinkedList<Double>());
+      bucketsForArray.add(new LinkedList<Double[]>());
+    }
+    
+
+    for(int j = 1; j <= maxNumDigits; j++) {        
+      for(int k = 0; k < changedRC.length; k++) {                 
+        double number = changedRC[k];                                                  
+        int digit = (int) ((number % Math.pow(10, j)) / Math.pow(10,j-1));
+        bucketsForRC.get(digit).add(number);
+        bucketsForArray.get(digit).add(arrays[k]);                                        
+      }                                                                    
+
+      double[] partiallySorted = new double[changedRC.length];
+      Double[][] parSorted = new Double[elements.length][elements[0].length];
+      int numAt = 0;                                          
+
+      search:
+      for(int m = 0; m < 10; m++) {                           
+        while(!bucketsForRC.get(m).isEmpty()) {                                  
+          partiallySorted[numAt] = bucketsForRC.get(m).pollFirst();   
+          parSorted[numAt] = bucketsForArray.get(m).pollFirst();
+          numAt++;                                                            
+        }
+        if(numAt == changedRC.length) {                                         
+          break search;                                                       
+        }
+      }
+      changedRC = partiallySorted;
+      arrays = parSorted;
+    }
+
+    double[][] finalVals = new double[arrays.length][arrays[0].length];
+    for(int i = 0; i < finalVals.length; i++) {
+      for(int j = 0; j < finalVals[0].length; j++) {
+        finalVals[i][j] = arrays[i][j];
+      }
+    }
+    Matrix sorted = new Matrix(this.name + "Sorted", finalVals);
+    if (columnOrRow.equals("r")) {
+      sorted.transpose();
+    }
+    
+    return sorted;
+  }
 
   // ********* Private Helper Methods *********
   
