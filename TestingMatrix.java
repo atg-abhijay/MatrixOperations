@@ -1,9 +1,11 @@
 import java.util.*;
 public class TestingMatrix {
-  public static void main(String[] args) {    
+  public static void main(String[] args) {
+    String columnRow = args[0];
+    int position = Integer.parseInt(args[1]);
     Matrix A = new Matrix("A", "5x4", true);
     A.printMatrix();
-    A.sort("r", 3).printMatrix();
+    A.sort(columnRow, position).printMatrix();
   }
 
   public static double[] addingFractions(double num1, double num2) {
