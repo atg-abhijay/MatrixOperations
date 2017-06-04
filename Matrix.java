@@ -3,7 +3,7 @@ public class Matrix{
   private String name;
   private String dimensions;
   private double[][] matrixEntries;
-  
+
   public Matrix(String name, double[][] entries) {
     // constructor which requires a name and a 2D array of double values
     this.name = name;
@@ -15,7 +15,7 @@ public class Matrix{
       }
     }
   }
-  
+
   public Matrix(String name, String size, boolean randomMatrix) {
     /* constructor which requires name, size of the matrix in the
        form "axb" and a boolean value asking whether the user wants
@@ -46,14 +46,14 @@ public class Matrix{
       this.matrixEntries = randomArray(height, width, upperBound);
     }
   }
-  
+
   public void setName(String newName) {
     this.name = newName;
   }
-  
+
   // ****** PRINTING A MATRIX ******
-  
-  
+
+
   public void printMatrix() {
     System.out.println("Matrix " + this.name + "(" + this.dimensions + ") -");
     for(int i = 0; i < this.matrixEntries.length; i++) {
@@ -88,7 +88,7 @@ public class Matrix{
     }
     System.out.println();
   }
-  
+
 
   // ****** ADDING/SUBTRACTING TWO MATRICES ******
 
@@ -161,11 +161,11 @@ public class Matrix{
     aToPower.setName(this.name + "ToPower" + power);
     return aToPower;
   }
-  
+
 
   // ****** MULTIPLYING TWO MATRICES ******
-  
-  
+
+
   public Matrix multiplyMatrices(Matrix secondMatrix, String productName) {
     if(this.matrixEntries[0].length != secondMatrix.matrixEntries.length) {
       throw new IllegalArgumentException("The 2 matrices cannot be multiplied! Their dimensions are not suitable for multiplication!");
@@ -184,11 +184,11 @@ public class Matrix{
     Matrix product = new Matrix(productName, productEntries);
     return product;
   }
-  
-  
+
+
   // ****** METHOD FOR FINDING DETERMINANT ******
-  
-  
+
+
   public int determinant() {
     if(this.matrixEntries.length != this.matrixEntries[0].length) {
       throw new IllegalArgumentException("Determinant can only be found for a square matrice!");
@@ -202,7 +202,7 @@ public class Matrix{
       }
       return determinant;
     }
-    
+
     Matrix[][] cofactors = this.allCofactors();
     for(int j = 0; j < length; j++) {
       // ***** Most important step - RECURSION *****
@@ -210,24 +210,24 @@ public class Matrix{
     }
     return determinant;
   }
-  
-  
+
+
   // ****** METHOD FOR SOLUTION OF SYSTEM ******
-  
-  
+
+
   public void solutionOfSystem(Matrix constantVals) {
     if(constantVals.matrixEntries[0].length != 1) {
       throw new IllegalArgumentException("The constant valued matrix provided has wrong dimensions!");
     }
     /* if we have a system of the form AX = B, where A is the
-       coefficient matrix, X is the solution matrix and B is 
+       coefficient matrix, X is the solution matrix and B is
        the constant valued matrix, then if A has a non-zero
        determinant, we can find inverse of A and the UNIQUE
        solution of the system can be given as X = ((A)^-1) * B or
                   X = (1/(det(A))) * adjoint(A) * B */
     int determinant = this.determinant();
     System.out.println("Determinant: " + determinant);
-    /* if the determinant is zero and all of the entries in 
+    /* if the determinant is zero and all of the entries in
        B are zero, then the system has infinitely many solutions.
        if even one of the entries in B is non-zero when the
        determinant is zero, then the system has no solution */
@@ -238,7 +238,7 @@ public class Matrix{
           numZeroesInB++;
         }
       }
-      
+
       if(numZeroesInB == this.matrixEntries.length) {
         System.out.println("The system has infinitely many solutions!");
         return;
@@ -248,7 +248,7 @@ public class Matrix{
         return;
       }
     }
-    
+
     System.out.println("The system has a unique solution - ");
     Matrix adjoint = this.adjointOfMatrix();
     Matrix adjointxB = adjoint.multiplyMatrices(constantVals, "AdjointXB");
@@ -261,7 +261,7 @@ public class Matrix{
       System.out.println("x" + (i+1) + " = " + leastForm[0] + "/" + leastForm[1]);
     }
   }
-  
+
 
   // ****** INVERSE OF A MATRIX ******
 
@@ -285,7 +285,7 @@ public class Matrix{
 
 
   // ****** ROW REDUCING A MATRIX ******
-  
+
 
   public Matrix rowReduce() {
     /* this method is used to carry a
@@ -304,10 +304,10 @@ public class Matrix{
     Matrix rowReduced = new Matrix("RREF of matrix " + this.name, rows);
     return rowReduced;
   }
-  
+
 
   // ****** TRANSPOSING A MATRIX ******
-  
+
 
   public void transpose() {
     double[][] transposed = new double[this.matrixEntries[0].length][this.matrixEntries.length];
@@ -334,7 +334,7 @@ public class Matrix{
   public Matrix compare(double value) {
     double[][] entries = new double[this.matrixEntries.length][this.matrixEntries[0].length];
     /* we compare the individual entries to
-       a value and if the entry is larger 
+       a value and if the entry is larger
        than the "value" then we store 1 at its
        position in a new matrix. if it is less
        than the "value", then 0, if equal to the
@@ -415,7 +415,7 @@ public class Matrix{
       }
     }
     //printArray(entries);
-      
+
     System.out.println("Please enter the " + rowColumn +  " to be appended");
     for(int j = 0; j < entries[0].length; j++) {
       entries[position - 1][j] = reader.nextDouble();
@@ -433,9 +433,9 @@ public class Matrix{
     }
     return modifiedMatrix;
   }
-  
 
-  // ********* MATRIX AS A SUDOKU ********** 
+
+  // ********* MATRIX AS A SUDOKU **********
 
   public void solveSudoku() {
     Stack<Integer> lastRowChanged = new Stack<Integer>();
@@ -477,7 +477,7 @@ public class Matrix{
                 }
               }
             }
-          }                
+          }
         }
       }
     }
@@ -501,13 +501,13 @@ public class Matrix{
     for(int i = 0; i < this.matrixEntries.length; i++ ) {
       for(int j = 0; j < this.matrixEntries.length; j++ ) {
         printFixedWidth(String.valueOf(this.matrixEntries[i][j]), digits);
-        // Print the vertical lines between boxes 
+        // Print the vertical lines between boxes
         if((j < this.matrixEntries.length-1) && ((j+1) % size == 0)) {
           System.out.print( " |" );
           System.out.print( " " );
         }
       }
-      
+
       System.out.println();
       // Print the horizontal line between boxes
       if((i < this.matrixEntries.length-1) && ((i+1) % size == 0)) {
@@ -546,11 +546,11 @@ public class Matrix{
     double max = 0;
 
     double[] changedRC = new double[elements.length];
-    Double[][] arrays = new Double[elements.length][elements[0].length];        
+    Double[][] arrays = new Double[elements.length][elements[0].length];
     for(int i = 0; i < changedRC.length; i++) {
-      double num = elements[i][position - 1];                              
+      double num = elements[i][position - 1];
         if(max < num) {
-          max = num;                                  
+          max = num;
         }
       changedRC[i] = num;
     }
@@ -559,36 +559,36 @@ public class Matrix{
       arrays[j] = elements[j];
     }
 
-    int maxNumDigits = (int) Math.log10(max) + 1;        
+    int maxNumDigits = (int) Math.log10(max) + 1;
     LinkedList<LinkedList<Double>> bucketsForRC = new LinkedList<LinkedList<Double>>();
     LinkedList<LinkedList<Double[]>> bucketsForArray = new LinkedList<LinkedList<Double[]>>();
-    for(int p = 0; p < 10; p++) {                           
+    for(int p = 0; p < 10; p++) {
       bucketsForRC.add(new LinkedList<Double>());
       bucketsForArray.add(new LinkedList<Double[]>());
     }
-    
 
-    for(int j = 1; j <= maxNumDigits; j++) {        
-      for(int k = 0; k < changedRC.length; k++) {                 
-        double number = changedRC[k];                                                  
+
+    for(int j = 1; j <= maxNumDigits; j++) {
+      for(int k = 0; k < changedRC.length; k++) {
+        double number = changedRC[k];
         int digit = (int) ((number % Math.pow(10, j)) / Math.pow(10,j-1));
         bucketsForRC.get(digit).add(number);
-        bucketsForArray.get(digit).add(arrays[k]);                                        
-      }                                                                    
+        bucketsForArray.get(digit).add(arrays[k]);
+      }
 
       double[] partiallySorted = new double[changedRC.length];
       Double[][] parSorted = new Double[elements.length][elements[0].length];
-      int numAt = 0;                                          
+      int numAt = 0;
 
       search:
-      for(int m = 0; m < 10; m++) {                           
-        while(!bucketsForRC.get(m).isEmpty()) {                                  
-          partiallySorted[numAt] = bucketsForRC.get(m).pollFirst();   
+      for(int m = 0; m < 10; m++) {
+        while(!bucketsForRC.get(m).isEmpty()) {
+          partiallySorted[numAt] = bucketsForRC.get(m).pollFirst();
           parSorted[numAt] = bucketsForArray.get(m).pollFirst();
-          numAt++;                                                            
+          numAt++;
         }
-        if(numAt == changedRC.length) {                                         
-          break search;                                                       
+        if(numAt == changedRC.length) {
+          break search;
         }
       }
       changedRC = partiallySorted;
@@ -605,12 +605,12 @@ public class Matrix{
     if (row) {
       sorted.transpose();
     }
-    
+
     return sorted;
   }
 
   // ********* Private Helper Methods *********
-  
+
 
   private static double[][] randomArray(int height, int width, int upperBound) {
     double[][] random = new double[height][width];
@@ -621,9 +621,9 @@ public class Matrix{
     }
     return random;
   }
-  
+
   private double[][] partialCofactors(double[][] A, int rowNumber, int columnNumber) {
-    /* this method finds the cofactor matrix for an entry in 
+    /* this method finds the cofactor matrix for an entry in
        the 2D array A with position (rowNumber, columnNumber) */
     if(A.length != A[0].length) {
       throw new IllegalArgumentException("Cofactors can only be found for square matrices!");
@@ -645,10 +645,10 @@ public class Matrix{
     }
     return D;
   }
-  
+
   private Matrix[][] allCofactors() {
-    /* generating the complete Cofactor 
-       matrix for a given matrix */ 
+    /* generating the complete Cofactor
+       matrix for a given matrix */
     int length = this.matrixEntries.length;
     double[][] Z = new double[length - 1][length - 1];
     Matrix[][] cofactors = new Matrix[length][length];
@@ -660,7 +660,7 @@ public class Matrix{
     }
     return cofactors;
   }
-  
+
   private Matrix adjointOfMatrix() {
     int length = this.matrixEntries.length;
     double[][] adjointValues = new double[length][length];
@@ -673,8 +673,8 @@ public class Matrix{
     Matrix adjoint = new Matrix("Adjoint", adjointValues);
     return adjoint;
   }
-  
-  /* There are 3 elementary row operations in a matrix - 
+
+  /* There are 3 elementary row operations in a matrix -
          1. Adding to a row a multiple of another row
          2. Multiplying a row with a non-zero constant
          3. Interchanging two rows */
@@ -685,7 +685,7 @@ public class Matrix{
     }
     return sumOfRows;
   }
-  
+
   private static double[] multiplyByConstant(double[] row, double constant) {
     double[] updatedRow = new double[row.length];
     for(int i = 0; i < updatedRow.length; i++) {
@@ -693,7 +693,7 @@ public class Matrix{
     }
     return updatedRow;
   }
-  
+
   private static void switchRows(double[][] rows, int numRow1, int numRow2) {
     double[] tempRow = new double[rows[0].length];
     for(int i = 0; i < tempRow.length; i++) {
@@ -702,14 +702,14 @@ public class Matrix{
     rows[numRow1] = rows[numRow2];
     rows[numRow2] = tempRow;
   }
-  
+
   private static void carryIntoRREF(double[][] rows, int numRow) {
     /* The procedure of carrying into RREF is carried out
        row by row. Once we have made all the modifications
        to a row, we move on to the next row. Start from Row 1.
        Then, repeat steps 1-3 for the remaining rows(by ignoring Row 1) */
 
-    // STEP 1 - Identify the leftmost non-zero column 
+    // STEP 1 - Identify the leftmost non-zero column
 
     /* let k (nonZero below) be a non-zero entry
        in that column. Move the row containing k
@@ -728,7 +728,7 @@ public class Matrix{
         }
       }
     }
-    
+
     /* we find the first non-zero entry
        in the row indexed numRow and store
        its position in the row and its value */
@@ -752,13 +752,13 @@ public class Matrix{
        the leading 1 */
     roundingOff(rows[numRow]);
     printArray(rows);
-    // STEP 3 - 
+    // STEP 3 -
 
     /* Using elementary row operations, make every entry above
        and below the leading 1(column of leading 1) to be zero */
     makeLeadingColumn(rows, numRow, position);
   }
-  
+
   private static void makeLeadingColumn(double[][] rows, int numRow, int position) {
     double coefficient = 0;
     int index = 0;
@@ -773,7 +773,7 @@ public class Matrix{
     }
     printArray(rows);
   }
-  
+
   public static void printArray(double[][] array) {
     System.out.println("\n");
     for(int i = 0; i < array.length; i++) {
@@ -791,7 +791,7 @@ public class Matrix{
       System.out.println();
     }
   }
-  
+
   /* private static boolean nonZeroRow(double[] row) {
     for(int i = 0; i < row.length; i++) {
       if(row[i] != 0) {
@@ -800,7 +800,7 @@ public class Matrix{
     }
     return false;
   } */
-  
+
   public static void roundingOff(double[] row) {
     double difference = 0;
     int closestVal = 0;
@@ -826,7 +826,7 @@ public class Matrix{
       }
     }
   }
-  
+
   public static double[] gcd(double numer, double denom) {
     double least = 0;
     double[] lowestForm = new double[2];
@@ -840,14 +840,14 @@ public class Matrix{
       lowestForm[1] = denom/numer;
       return lowestForm;
     }
-    
+
     if(Math.abs(numer) < Math.abs(denom)) {
       least = Math.abs(numer);
     }
     else{
       least = Math.abs(denom);
     }
-    
+
     double gcd = 1;
     for(int i = 2; i < least/2; i++) {
       if((numer) % i == 0 && (denom) % i == 0) {
@@ -858,19 +858,19 @@ public class Matrix{
     lowestForm[1] = (denom)/gcd;
     return lowestForm;
   }
-  
+
   public static void realRoundingOff(double[] row) {
     double difference = 0;
     double tolerance = 0.00001;
     for(int i = 0; i < row.length; i++) {
       if(row[i] % ((int) row[i]) != 0) {
         double original = row[i];
-        
-        
+
+
       }
     }
   }
-  
+
   public static double[] turnIntoFraction(double entry) {
     double tolerance = 0.00001;
     //double base = entry; // 2.4522222
@@ -940,7 +940,7 @@ public class Matrix{
 
   // Methods for working with Sudoku
 
-  
+
   private void backTrack(int currentRow, int currentColumn, Stack<Integer> lastRowChanged, Stack<Integer> lastColumnChanged, Stack<Integer> lastValidVal) {
     for(int p = lastValidVal.peek()+1; p < 10; p++) {
       if(this.isValid(currentRow, currentColumn, p)) {
